@@ -78,7 +78,12 @@
 
         <div class="recommd-channel">
           <span class="recommd-title c6">优势品类:</span>
-          <div class="recommd-box f1" :class="{'aligin-item-end': supplierInfo.supplier_category.length <= 0}">
+          <div
+            class="recommd-box f1"
+            :class="{
+              'aligin-item-end': supplierInfo.supplier_category.length <= 0,
+            }"
+          >
             <template v-if="supplierInfo.supplier_category.length > 0">
               <span
                 v-for="v in supplierInfo.supplier_category"
@@ -94,7 +99,12 @@
 
         <div class="recommd-channel mt16">
           <span class="recommd-title c6">知名品牌:</span>
-          <div class="recommd-box f1" :class="{'aligin-item-end': supplierInfo.supplier_famous.length <= 0}">
+          <div
+            class="recommd-box f1"
+            :class="{
+              'aligin-item-end': supplierInfo.supplier_famous.length <= 0,
+            }"
+          >
             <template v-if="supplierInfo.supplier_famous.length > 0">
               <span
                 v-for="v in supplierInfo.supplier_famous"
@@ -157,7 +167,10 @@
           </div>
         </div>
 
-        <div v-if="supplierInfo.supplier_channel.length > 0" class="recommd-channel">
+        <div
+          v-if="supplierInfo.supplier_channel.length > 0"
+          class="recommd-channel"
+        >
           <span class="recommd-title c6">推广渠道:</span>
           <div class="recommd-box f1">
             <span
@@ -180,13 +193,33 @@
             <img :src="goodInfo.goods_image_list[0]" alt="">
           </div>
           <div class="product-title">
+            <!-- v-if="parseFloat(goodInfo.is_chosen) === 1"  -->
+            <span v-if="parseFloat(goodInfo.is_chosen) === 1" class="chosen"> 精选 </span>
             {{ goodInfo.goods_name }}
           </div>
           <div class="product-price">
-            <span>
+            <!-- <span>
               {{ goodInfo.selling_price }}
             </span>
-            <span>市场价{{ goodInfo.original_price }}</span>
+            <span>市场价{{ goodInfo.original_price }}</span> -->
+            <div
+              class="price-item percent-profit"
+              :data-profit="`利润率${goodInfo.percent_profit}`"
+            >
+              <span class="c6 fs24">供货价</span>
+              <span>{{ goodInfo.selling_price }}</span>
+            </div>
+
+            <div class="bd">
+              <div class="price-item">
+                <span class="c6 fs24">市场价</span>
+                <span>{{ goodInfo.original_price }}</span>
+              </div>
+              <div class="price-item">
+                <span class="c6 fs24">利润/单</span>
+                <span>{{ goodInfo.single_profit }}</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -207,13 +240,24 @@
             <span>生产地址</span>
             <span>{{ goodInfo.address }}</span>
           </div>
-          <div v-if="goodInfo.shipping && goodInfo.shipping.postage_name" class="product-item">
+          <div
+            v-if="goodInfo.shipping && goodInfo.shipping.postage_name"
+            class="product-item"
+          >
             <span>关于发货</span>
             <span>{{ goodInfo.shipping.postage_name }}</span>
           </div>
-          <div v-if="goodInfo.shipping && goodInfo.shipping.shipping_express.length > 0" class="product-item">
+          <div
+            v-if="
+              goodInfo.shipping && goodInfo.shipping.shipping_express.length > 0
+            "
+            class="product-item"
+          >
             <span>默认快递</span>
-            <span>{{ goodInfo.shipping && goodInfo.shipping.shipping_express.join(" | ") }}</span>
+            <span>{{
+              goodInfo.shipping &&
+                goodInfo.shipping.shipping_express.join(" | ")
+            }}</span>
           </div>
         </div>
         <div class="product-explain">
@@ -224,7 +268,7 @@
             </svg>
             {{ goodInfo.authorized_name }}
           </span>
-          <span v-if="goodInfo.shipping">
+          <span v-if="goodInfo.shipping" class="ml24">
             <!-- <i>1</i> -->
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#youshushangPin_baoZhang" />
@@ -292,7 +336,10 @@ export default {
         /<img/gi,
         '<img style="display: block;width: 100%;height: 100%;"'
       )
-      res.data.goods_info.description = res.data.goods_info.description.replace(/<\/*script>.*/, '')
+      res.data.goods_info.description = res.data.goods_info.description.replace(
+        /<\/*script>.*/,
+        ''
+      )
       // console.log(res)
       // ctx.error({ statusCode: 404, message: 'Post not found' })
       return {
@@ -303,7 +350,11 @@ export default {
         // url: ctx.$axios.defaults.baseURL
       }
     } catch (e) {
-      ctx.error({ statusCode: 404, message: '该商品已被删除，不可查看~', express: 'good' })
+      ctx.error({
+        statusCode: 404,
+        message: '该商品已被删除，不可查看~',
+        express: 'good'
+      })
     }
   },
   data () {
@@ -353,17 +404,23 @@ export default {
       this.brand = window.navigator.userAgent.toLowerCase()
       if (u.includes('Android') || u.includes('Linux')) {
         // Android
-        if (this.openApp(`youshu://js.to.android/app?event=goods_detail&&id=${this.goodInfo.id}`)) {
-          this.openApp(`youshu://js.to.android/app?event=goods_detail&&id=${this.goodInfo.id}`)
+        if (
+          this.openApp(
+            `youshu://js.to.android/app?event=goods_detail&&id=${this.goodInfo.id}`
+          )
+        ) {
+          this.openApp(
+            `youshu://js.to.android/app?event=goods_detail&&id=${this.goodInfo.id}`
+          )
         } else if (this.brand.includes('huawei')) {
           window.location.href =
-              'appmarket://details?id=com.xlkj.youshu#Intent;package=com.huawei.appmarket;scheme=appshare;end;'
+            'appmarket://details?id=com.xlkj.youshu#Intent;package=com.huawei.appmarket;scheme=appshare;end;'
         } else if (this.brand.includes('vivo')) {
           window.location.href =
-              'intent://details?id=com.xlkj.youshu#Intent;package=com.bbk.appstore;scheme=market;end;'
+            'intent://details?id=com.xlkj.youshu#Intent;package=com.bbk.appstore;scheme=market;end;'
         } else if (this.brand.includes('xiaomi')) {
           window.location.href =
-              'mimarket://details?id=com.xlkj.youshu#Intent;package=com.xiaomi.market;scheme=market;end;'
+            'mimarket://details?id=com.xlkj.youshu#Intent;package=com.xiaomi.market;scheme=market;end;'
         } else {
           window.location.href = 'https://app.ysxp.net/app/youshu.apk'
         }
@@ -411,8 +468,7 @@ export default {
 img {
   width: 100%;
   height: 100%;
-    object-fit: cover;
-
+  object-fit: cover;
 }
 
 i {
@@ -658,7 +714,7 @@ i {
   overflow: hidden;
   margin-top: 48px;
   // height: 707px;
-  padding-bottom: 24px;
+  // padding-bottom: 24px;
   border-radius: 12px;
   background-color: #f9fafc;
   .product-img {
@@ -674,46 +730,91 @@ i {
     color: #333;
     font-size: 32px;
     font-weight: bold;
+    .chosen {
+      display: inline-block;
+      box-sizing: border-box;
+      padding: 0px 6px;
+      width: 74px;
+      height: 40px;
+      line-height: 44px;
+      font-size: 24px;
+      font-weight: 400;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(313deg, #f87557 0%, #f55530 100%);
+      border-radius: 10px;
+      vertical-align: bottom;
+    }
   }
 
   .product-price {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: flex-end;
-    padding: 0 32px;
+    // align-items: flex-end;
+    padding: 30px 32px;
+    padding-bottom: 40px;
+    // background: url('/img/price-bg.png') no-repeat;
+    // background-size: 100% 100%;
+    background-color: #fdf4f3;
     span {
       font-size: 40px;
-      font-weight: bold;
       color: #f52f30;
+
       &:first-child {
         position: relative;
-        padding-left: 24px;
+        // padding-left: 24px;
+
+        // &::after {
+        //   content: "";
+        //   position: absolute;
+        //   top: 50%;
+        //   right: -80px;
+        //   width: 68px;
+        //   height: 30px;
+        //   background: url("@/static/img/xiangQing_gongHuoJia_icon.png")
+        //     no-repeat;
+        //   background-size: 100%;
+        //   transform: translateY(-50%);
+        // }
+      }
+      &:last-child {
+        position: relative;
+        // padding-left: 32px;
+        margin-left: 32px;
+        align-items: flex-end;
+        // text-decoration: line-through;
+        font-size: 36px;
+        font-weight: bold;
+        // vertical-align: bottom;
+        // color: #ccc;
         &::before {
           position: absolute;
-          left: 0;
-          bottom: 6px;
+          margin-bottom: 2px;
+          left: -27px;
+          bottom: 0px;
           content: "￥";
           font-size: 24px;
         }
-        &::after {
-          content: "";
-          position: absolute;
-          top: 50%;
-          right: -80px;
-          width: 68px;
-          height: 30px;
-          background: url("@/static/img/xiangQing_gongHuoJia_icon.png")
-            no-repeat;
-          background-size: 100%;
-          transform: translateY(-50%);
-        }
       }
-      &:last-child {
-        align-items: flex-end;
-        text-decoration: line-through;
-        font-size: 28px;
-        font-weight: 400;
-        color: #ccc;
+    }
+  }
+
+  .bd {
+    display: flex !important;
+    margin-top: 36px;
+    justify-content: space-between;
+    .price-item {
+      display: flex;
+      align-items: flex-end;
+      span {
+        &:first-child {
+          margin-bottom: 2px;
+        }
+        &:last-child {
+          line-height: unset;
+          vertical-align: bottom;
+        }
       }
     }
   }
@@ -755,6 +856,26 @@ i {
   }
 }
 
+.percent-profit {
+  position: relative;
+  &::after {
+    content: attr(data-profit);
+    box-sizing: border-box;
+    position: absolute;
+    top: 6px;
+    // right: 50%;
+    margin-left: 4px;
+    margin-top: -5px;
+    padding: 2px 8px;
+    background: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    color: #f5502a;
+    border: 1px solid #f5502a;
+    border-radius: 20px 20px 20px 2px;
+  }
+}
+
 .product-explain {
   border-radius: 0 0 12px 12px;
   display: flex;
@@ -763,9 +884,9 @@ i {
   span {
     font-size: 26px;
     color: #999;
-    &:last-child {
-      margin-left: 24px;
-    }
+    // &:last-child {
+    //   margin-left: 24px;
+    // }
     svg {
       vertical-align: middle;
     }
