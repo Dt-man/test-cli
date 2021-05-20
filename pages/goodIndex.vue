@@ -33,8 +33,10 @@
             </span>
           </div>
         </div>
-        <div class="basic-avatar">
-          <img :src="supplierInfo.portrait_url" alt="">
+        <div class="basic-avatar-box">
+          <div class="basic-avatar">
+            <img :src="supplierInfo.portrait_url" alt="">
+          </div>
         </div>
       </div>
 
@@ -194,7 +196,9 @@
           </div>
           <div class="product-title">
             <!-- v-if="parseFloat(goodInfo.is_chosen) === 1"  -->
-            <span v-if="parseFloat(goodInfo.is_chosen) === 1" class="chosen"> 精选 </span>
+            <span v-if="parseFloat(goodInfo.is_chosen) === 1" class="chosen">
+              精选
+            </span>
             {{ goodInfo.goods_name }}
           </div>
           <div class="product-price">
@@ -488,19 +492,26 @@ i {
   display: flex;
   justify-content: space-between;
   margin-top: 32px;
-  .basic-avatar {
-    position: absolute;
-    top: -100%;
-    right: 0;
-    overflow: hidden;
+  .basic-avatar-box {
+    // overflow: hidden;
+    position: relative;
     width: 148px;
     height: 148px;
+  }
+  .basic-avatar {
+    overflow: hidden;
+    position: absolute;
+    // top: -100%;
+    right: 0;
+    width: 150px;
+    height: 150px;
     border: 7px solid #e6e6e6;
     border-radius: 50%;
     background-color: #fff;
-    transform: translateY(-10%);
+    transform: translateY(-70%);
   }
   .basic-express {
+    // margin-right: 20px;
     h4 {
       font-weight: bold;
       font-size: 36px;
